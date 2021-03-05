@@ -16,7 +16,7 @@ You could run this from the terminal by switching to the path of the cloned repo
 alias noteme="cd path/to/this/repo && python3 noteme.py"
 ```
 
-If you are using (Neo)Vim, you can install the plugin **Note Me Vim** that I created to hel users with this
+If you are using (Neo)Vim, you can install the plugin [Note Me Vim](https://github.com/Force4760/note-me-vim) that I created to hel users with this
 
 ### Create Git Repo
 On the **/Notes** folder run the following commands:
