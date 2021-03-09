@@ -1,6 +1,7 @@
 import os
 import functions.check_folder as check_folder
 import functions.day as day
+import datetime
 
 
 def file_edit(file: str, date: list, hour: list):
@@ -58,18 +59,28 @@ def copy(file, w: str):
         f.write(w)
 
 
-def note_file(b: str, w: str = ""):
+def note_file(b: str, w: str = "", n: bool = False):
     """
     Prepare note
     s: str -> base path
     w: str -> if given it will be written to the file. (optional)
     """
-    # check folder
-    folder = check_folder.check(b)
+    if n:
+        # check folder
+        folder = check_folder.check_next(b)
+    
+        # get date
+        hour = day.get_hour_next()
+        date = day.get_date_next()
+    else:
+        # check folder
+        folder = check_folder.check(b)
+    
+        # get date
+        hour = day.get_date(True)
+        date = day.get_date(False)
 
-    # get date
-    hour = day.get_date(True)
-    date = day.get_date(False)
+
 
     file = folder + "/" + str(int(hour[0])) + ".md"
 

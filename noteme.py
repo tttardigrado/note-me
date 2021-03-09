@@ -60,6 +60,12 @@ def nonday_run(name: str, e:str, g:bool, b:str):
     if g:
         git(b)
 
+def next_run(e:str, g:bool, b:str):
+    path = note_file(b, n=True)
+    term(path, e)
+    if g:
+        git(b)
+
 def todo(e: str, g: bool, b:str):
     """
     The todo function
@@ -110,6 +116,8 @@ if __name__ == "__main__":
             todo(e, g, b)
         elif arg[1] == "-p":
             p(g, b, note_file)
+        elif arg[1] == "-n":
+            next_run(e, g, b)
         elif arg[1] == "-s":
             set_settings()
         elif arg[1] == "-v":
