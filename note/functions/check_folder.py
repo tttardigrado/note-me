@@ -1,5 +1,5 @@
 import os
-import functions.day as day
+from . import day
 
 
 def check(b: str):
@@ -23,6 +23,7 @@ def check(b: str):
     make_d(folder)
 
     return folder
+
 
 def check_next(b: str):
     """
@@ -56,5 +57,7 @@ def make_d(folder: str):
     if not os.path.exists(folder):
         os.mkdir(folder)
 
+
 if __name__ == "__main__":
     check_next("home/force/Documents/")
+

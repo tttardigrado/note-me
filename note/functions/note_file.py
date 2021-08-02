@@ -1,6 +1,6 @@
 import os
-import functions.check_folder as check_folder
-import functions.day as day
+from . import day, check_folder
+
 import datetime
 
 
@@ -68,19 +68,17 @@ def note_file(b: str, w: str = "", n: bool = False):
     if n:
         # check folder
         folder = check_folder.check_next(b)
-    
+
         # get date
         hour = day.get_hour_next()
         date = day.get_date_next()
     else:
         # check folder
         folder = check_folder.check(b)
-    
+
         # get date
         hour = day.get_date(True)
         date = day.get_date(False)
-
-
 
     file = folder + "/" + str(int(hour[0])) + ".md"
 

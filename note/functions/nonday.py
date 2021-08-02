@@ -1,5 +1,6 @@
 import os
-import functions.check_folder as check_folder
+from . import check_folder
+
 
 def nonday(b: str, name: str) -> str:
     name = name.strip()
@@ -8,19 +9,20 @@ def nonday(b: str, name: str) -> str:
     name = name.replace(" ", "-")
     exists = check_nonday(b, name)
     if exists:
-        return b + "Notes/note/" + name +".md"
+        return b + "Notes/note/" + name + ".md"
     else:
         if os.path.exists(os.path.expanduser("~/.config/note-me/templates/non_date_template.md")):
             with open(os.path.expanduser("~/.config/note-me/templates/non_date_template.md"), "r") as t:
                 template = "\n" + t.read() + "\n"
         else:
             template = ""
-        with open(b + "Notes/note/" + name +".md", "w") as f:
+        with open(b + "Notes/note/" + name + ".md", "w") as f:
             f.write("# " + name.upper() + "\n")
             f.write(template)
-        return b + "Notes/note/" + name +".md"
+        return b + "Notes/note/" + name + ".md"
 
-def check_nonday(b: str, name:str) -> bool:
+
+def check_nonday(b: str, name: str) -> bool:
     folder = b + "Notes/"
     check_folder.make_d(folder)
 
@@ -35,4 +37,3 @@ def check_nonday(b: str, name:str) -> bool:
 
 
 #print(nonday("/home/force/Documents/", "   -df  daf adf "))
-

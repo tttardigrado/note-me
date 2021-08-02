@@ -1,22 +1,23 @@
-from functions.note_file import note_file
-from functions.todo import todo_check
-from functions.settings import set_settings
-from functions.view import find_file, view_td
-from functions.nonday import nonday
-from functions.paste import p, paste_file
+from .functions.note_file import note_file
+from .functions.todo import todo_check
+from .functions.settings import set_settings
+from .functions.view import find_file, view_td
+from .functions.nonday import nonday
+from .functions.paste import p, paste_file
 import subprocess
 import os
 import json
 import sys
 
-def term(path:str, e:str):
+
+def term(path: str, e: str, b: str):
     """A function that runs some terminal commands
     changes to the notes folder, and opens the note
 
     Args:
         path (str): path of the note
-        e (str): editor to open 
-        
+        e (str): editor to open
+
     """
     folder = b + "Notes/"
     os.chdir(folder)
@@ -32,7 +33,7 @@ def settings() -> list:
     editor: str -> the editor to run
     git: bool -> if it should run git
     """
-    with open("./.config/settings.json", "r") as f:
+    with open(os.path.expanduser("~/.config/note-me/settings.json"), "r") as f:
         content = f.read()
         content = json.loads(content)
         editor = content["editor"]
@@ -41,7 +42,7 @@ def settings() -> list:
     return [editor, git, base]
 
 
-def run(e: str, g: bool, b:str):
+def run(e: str, g: bool, b: str):
     """
     The main function.
     It runs when main.py runs with no arguments
@@ -50,23 +51,26 @@ def run(e: str, g: bool, b:str):
     g: bool -> if it should run git
     """
     path = note_file(b)
-    term(path, e)
+    term(path, e, b)
     if g:
         git(b)
 
-def nonday_run(name: str, e:str, g:bool, b:str):
+
+def nonday_run(name: str, e: str, g: bool, b: str):
     path = nonday(b, name)
-    term(path, e)
+    term(path, e, b)
     if g:
         git(b)
 
-def next_run(e:str, g:bool, b:str):
+
+def next_run(e: str, g: bool, b: str):
     path = note_file(b, n=True)
-    term(path, e)
+    term(path, e, b)
     if g:
         git(b)
 
-def todo(e: str, g: bool, b:str):
+
+def todo(e: str, g: bool, b: str):
     """
     The todo function
     It runs when main.py runs with the -t argument
@@ -79,27 +83,24 @@ def todo(e: str, g: bool, b:str):
 
     with open(path, "a") as f:
         f.write("\n- [] ")
-    term(path, e)
+    term(path, e, b)
     if g:
         git(b)
 
 
-
-
-
-def git(b:str):
+def git(b: str):
     """
     The git function
     """
     notes_path = b
-    os.chdir(notes_path)
+    os.chdir(os.path.join(notes_path, "Notes"))
     os.system("git add .")
     os.system("git commit -m 'note'")
-    os.system("git push -u origin main")
+    os.system("git push -u main master")
 
 
-if __name__ == "__main__":
-    if os.path.exists("./.config/settings.json"):
+def main():
+    if os.path.exists(os.path.expanduser("~/.config/note-me/settings.json")):
         sets = settings()
         e = sets[0]
         g = sets[1]
@@ -126,7 +127,7 @@ if __name__ == "__main__":
             view_td(b)
         else:
             nonday_run(arg[1], e, g, b)
-            
+
     elif len(arg) == 3:
         if arg[1] == "-v":
             find_file(b, arg[2])
@@ -134,3 +135,7 @@ if __name__ == "__main__":
             paste_file(b, arg[2])
     else:
         print("Help\n  No arguments: Open the note for the day.\n  -c: Paste your clipboard on the note for the day\n  -t: Open the todo note.\n  -s: Settings.\n  -v: View the note for the day in the browser.\n  -v day/month/year: View the chosen note in the browser.\n")
+
+
+if __name__ == "__main__":
+    main()
